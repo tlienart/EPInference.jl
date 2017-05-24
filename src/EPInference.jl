@@ -1,5 +1,7 @@
 module EPInference
 
-# package code goes here
+using ExpFamily
+
+include("samplers/impsampling.jl")
 
 end # module
