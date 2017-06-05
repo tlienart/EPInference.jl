@@ -1,3 +1,11 @@
+"""
+    impsampling(lltarget, proposal, nsamples, nattemps)
+
+Tries to produce samples using an importance sampling procedure with a proposal
+in the Exponential Family (see module `ExpFamily`). The function lltarget takes
+an array of points of dimensions `p x N` with `N` the number of samples to be
+generated.
+"""
 function impsampling(lltarget::Function, proposal::EFamily, nsamples::Int;
                      nattempts=5)::Tuple{Matrix{Float},Vector{Float}}
     attempt   = 1
