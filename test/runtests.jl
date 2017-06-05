@@ -1,5 +1,3 @@
-using EPInference
-using Base.Test
+using Base.Test, EPInference
 
-# write your own tests here
-@test 1 == 2
+@testset "imp.sampling" begin include("impsampl_test.jl") end
