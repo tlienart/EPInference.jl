@@ -8,6 +8,7 @@ const Float = Float64
 export
     impsampling
 
-include("samplers/impsampling.jl")
+include("samplers.jl")
+include("epalgorithms.jl")
 
 end # module
