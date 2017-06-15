@@ -13,7 +13,7 @@ function impsampling(lltarget::Function, proposal::EFamily, nsamples::Int;
     samples,w = [],[]
     while notvalid && attempt <= nattempts
         samples       = rand( proposal, nsamples )
-        logliksamples = loglik( proposal, samples)
+        logliksamples = uloglik( proposal, samples)
 
         # IS weights
         lW  = lltarget( samples ) - logliksamples
