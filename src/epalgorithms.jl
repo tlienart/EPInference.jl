@@ -2,7 +2,8 @@ export
     ParamsEP,
     epNP,
     epdNP,
-    epMP
+    epMP,
+    epSNEP
 
 immutable ParamsEP
     prior::EFamily
@@ -112,6 +113,39 @@ function epMP(p::ParamsEP)
                                     p.damp*GaussianMeanParam(muhat[1], muhat[2])
                                   )
             locapprox[i] = globapprox-cavity
+        end
+        push!(globapprox_mem, globapprox)
+    end
+    (globapprox, globapprox_mem)
+end
+
+
+"""
+    epSNEP
+
+Serial SNEP updates attempt
+"""
+function epSNEP(p::ParamsEP)
+    globapprox_mem = []
+
+    locapprox  = [ones(GaussianNatParam, p.dim)/100 for i in 1:p.nfactors]
+    globapprox = p.prior + sum(locapprox)
+
+    push!(globapprox_mem, globapprox)
+
+    for iter in 1:p.nEP
+        for i in randperm(p.nfactors)
+            cavity      = globapprox - locapprox[i]
+            lltilted(x) = p.logfactors[i](x) + uloglik(cavity, x)
+            (iss,w)     = impsampling(lltilted, globapprox, p.nIS)
+            muhat       = sum( w[j]*suffstats(GaussianNatParam, iss[:,j])
+                                for j in 1: p.nIS )
+            locapprox[i] = natparam( meanparam(locapprox[i]) + p.damp*(
+                                GaussianMeanParam(muhat[1], muhat[2]) -
+                                meanparam(globapprox)
+                                )
+                              )
+            globapprox = cavity + locapprox[i]
         end
         push!(globapprox_mem, globapprox)
     end
