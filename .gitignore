@@ -1,5 +1,2 @@
-*.DS_Store
-*.jl.cov
-*.jl.*.cov
-*.jl.mem
-*.DS_Store
+*DS_Store
+.ipynb_checkpoints
