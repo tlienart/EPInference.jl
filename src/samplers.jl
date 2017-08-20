@@ -18,7 +18,7 @@ function impsampling(lltarget::Function, proposal::EFamily, nsamples::Int;
         # IS weights
         lW  = lltarget( samples ) - logliksamples
         lW -= maximum(lW) # avoid underflow
-        w   = exp(lW)
+        w   = exp.(lW)
         w  /= sum(w)
 
         notvalid = any(isnan.(w))
