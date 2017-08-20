@@ -1,9 +1,9 @@
-export
-    ParamsEP,
-    epNP,
-    epdNP,
-    epMP,
-    epSNEP
+# export
+#     ParamsEP,
+#     epNP,
+#     epdNP,
+#     epMP,
+#     epSNEP
 
 immutable ParamsEP
     prior::EFamily
@@ -16,7 +16,8 @@ immutable ParamsEP
     # ------------
     dim::Int
     nfactors::Int
-    function ParamsEP(prior,factors,nEP,nIS,damp=0.1,minvar=1e-5)
+    function ParamsEP(prior,factors;
+                        nEP=100,nIS=100,damp=0.1,minvar=1e-5)
         @assert nIS>1 "Need at least two samples per estimator"
         #@assert 0.0<damp<=1.0 "Damping parameter should be in (0,1]"
         new(prior, factors, nEP, nIS, damp, minvar,
@@ -28,10 +29,12 @@ end
     epNP
 
 Serial EP updates with damping in the Natural Parameter space.
+This is the "SMS" style update.
 """
 function epNP(p::ParamsEP)
     globapprox_mem = []
 
+    # For each factor, we start with a very flat spherical gaussian
     locapprox  = [ones(GaussianNatParam, p.dim)/100 for i in 1:p.nfactors]
     globapprox = p.prior + sum(locapprox)
 

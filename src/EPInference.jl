@@ -1,14 +1,14 @@
-module EPInference
+# module EPInference
 
 using Compat
 using ExpFamily
 
 const Float = Float64
 
-export
-    impsampling
+# export
+#     impsampling
 
 include("samplers.jl")
 include("epalgorithms.jl")
 
-end # module
+#end # module
